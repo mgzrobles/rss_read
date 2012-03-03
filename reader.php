@@ -1,17 +1,28 @@
 <?php
+/**
+ * Content left
+ */
 function read_left() {
 	print lectorRSS("http://feeds.feedburner.com/unblogenred");
 }
 
+/**
+ * Content right
+ */
 function read_right() {
 	print lectorRSS("http://feeds.feedburner.com/blogcmt/feed");
 }
 
-
-function lectorRSS($url,$elementos=6,$inicio=0) {
+/**
+ * Devuelve el html con las ultimas noticias de un canal rss dado
+ * @param $url
+ * @param $elementos
+ * @param $inicio
+ */
+function lectorRSS($url, $elementos = 6, $inicio = 0) {
 	$cache_version = "cache/" . basename($url);
 	$archivo = fopen($url, 'r');
-	stream_set_blocking($archivo,true);
+	stream_set_blocking($archivo, TRUE);
 	stream_set_timeout($archivo, 5);
 	$datos = stream_get_contents($archivo);
 	$status = stream_get_meta_data($archivo);
@@ -30,7 +41,7 @@ function lectorRSS($url,$elementos=6,$inicio=0) {
 	foreach ($noticias->channel->item as $noticia) {
 		if($ContadorNoticias<$elementos){
 			if($ContadorNoticias>$inicio){
-				$output .= "<li><a href='".$noticia->link."' target='_blank' class='tooltip' title='".utf8_decode($noticia->title)."'>";
+				$output .= "<li><a href='" . $noticia->link . "' target='_blank' class='tooltip' title='" . utf8_decode($noticia->title) . "'>";
 				$output .= utf8_decode($noticia->title);
 				$output .= "</a></li>";
 			}
